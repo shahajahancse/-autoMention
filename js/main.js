@@ -33,3 +33,14 @@
     };
     // Initialize Country on the autocomplete field
     $("#county-example").atwho(countriesSettings);
+
+
+    // Example 4 to initialize multiple same field
+    var userSettings = {
+        at: "@",
+        data:['Hans', 'Peter', 'Tom', 'Anne', 'Anna', 'John', 'Bob', 'Cook','Dolly','Eschar','Molly','Falsy','Gorge','Ita','Kenya','Lol','Nasty','Obi','Quick','Recd','Sally','Unv','Vale','Wow']
+    };
+    // Initialize User Settings, Emojis Settings and Country Settings on the same autocomplete field
+    $("#multiple").atwho(emojiSettings).atwho(countriesSettings).atwho(userSettings);
+
+
