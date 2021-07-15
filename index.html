@@ -65,4 +65,24 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function () {
+        var text = document.getElementById('more-complex');
+        // text area auto resize
+        text.each(function(){
+            $(this).attr('rows',9);
+            resize($(this));
+        });
+
+        text.on('input', function(){
+            resize($(this));
+        });
+
+        function resize ($text) {
+            $text.css('height', 'auto');
+            $text.css('height', $text[0].scrollHeight+'px');
+        }
+    });
+</script>
+
 
