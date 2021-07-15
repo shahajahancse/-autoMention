@@ -61,3 +61,97 @@
             $("#first-ajax").atwho(results);
         });
     });
+
+
+ /*
+    // Finally More Complex (@) Country search and Suggest, (!) University search and Suggest (#) Capital search and Suggest. // Multiple API call and Dynamically api url change and api call to data fetch.
+ */
+    $('#more-complex').keyup(function () {
+        // find search term
+        let at = '';
+        let query = '';
+        let atRegex = /[@#!]/g; // set multiple character to mention search
+        let str = $(this).val();  //  get query value
+
+        // find mention character
+        if (query = str.match(atRegex)) {
+            at = query.toString();
+        } else {
+            return false;
+        }
+
+        //get url by specific search term to search data
+        let url = '';
+        if (createDynamicUrl(at, str)) {
+            url = createDynamicUrl(at, str);
+        } else {
+            return false;
+        }
+
+        // finally ajax request to get data
+        $.ajax({
+            url: url,
+            success: function(result){
+                // data serialize
+                // if data not formatting, so first need data formatting to display data
+                if (at === '!') {
+                    result = dataFormat(result);
+                }
+                // finally getting data display and selecting
+                var country = {
+                    at: at,  // dynamically set
+                    data:result,
+                    limit: 10,    // default set 5
+                    maxLen: 15,   // default set 20
+                    displayTpl: "<li>${name} </li>",
+                    insertTpl: "<li>${name} </li>",
+                    insertTpl: "${name}",
+                };
+                $("#more-complex").atwho(country);  // Finally auto complete
+            }
+        });
+    });
+
+
+    // data serialize
+    function dataFormat(result) {
+        let arrays = new Array();  // declare empty array to data serialize
+        // Converting capital index to  name index
+        for (const key of result) {
+            arrays.push({name: key.capital, country: key.name});
+        }
+        return arrays; // finally return data
+    }
+
+
+    // set url by specific search term
+    function createDynamicUrl(at, str) {
+        let url = '';
+        let regex = '';
+        let search = '';
+
+        // url define to data fetch
+        regex = /(@|#|!)?\w*$/mg;
+        if ((at === '@') && (str.match(regex))) {    // first set at sign character for search
+            search = str.match(regex).join("").replace('@', '');
+            if (search) {
+                url = 'https://restcountries.eu/rest/v2/name/'+search;
+            }
+
+        } else if ((at === '#') && (str.match(regex))) {  // second set hash sign character for search
+            // regex = /#\w*$/mg;
+            search = str.match(regex).join("").replace('#', '');
+            if (search) {
+                url = 'http://universities.hipolabs.com/search?name='+search;
+            }
+        } else if ((at === '!') && (str.match(regex))) {   // third set exclamatory sign character for search
+            // regex = /!\w*$/mg;
+            search = str.match(regex).join("").replace('!', '');
+            if (search) {
+                url = 'https://restcountries.eu/rest/v2/capital/'+search;
+            }
+        }
+        return url;  // finally return url
+    }
+
+// Conclusion the More complex section is not ensure to Time Complicity. This section just testing purpose used.
