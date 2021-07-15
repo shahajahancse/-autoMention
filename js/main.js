@@ -1,5 +1,5 @@
 
-    // Basic Example 1 to suggest name
+    // Basic Example 1  Basic user autocomplete to suggest name
     $('#basic-example').atwho({
         at: "@",  //set search term
         data:['Hans', 'Peter', 'Tom', 'Anne', 'Anna', 'John', 'Bob', 'Cook','Dolly','Eschar','Molly','Falsy','Gorge','Ita','Kenya','Lol','Nasty','Obi','Quick','Recd','Sally','Unv','Vale','Wow']
@@ -35,7 +35,7 @@
     $("#county-example").atwho(countriesSettings);
 
 
-    // Example 4 to initialize multiple same field
+    // Example 4 to initialize multiple autocomplete on the same field
     var userSettings = {
         at: "@",
         data:['Hans', 'Peter', 'Tom', 'Anne', 'Anna', 'John', 'Bob', 'Cook','Dolly','Eschar','Molly','Falsy','Gorge','Ita','Kenya','Lol','Nasty','Obi','Quick','Recd','Sally','Unv','Vale','Wow']
@@ -44,3 +44,20 @@
     $("#multiple").atwho(emojiSettings).atwho(countriesSettings).atwho(userSettings);
 
 
+ // example 5 normal ajax request
+    // simple get data and show
+    $('#first-ajax').keyup(function () {
+        var url = 'https://restcountries.eu/rest/v2/all';
+        $.get(url, function(data, status){
+            let results = {
+                at: '@',
+                data:data,
+                limit: 10,    // default set 5
+                maxLen: 15,   // default set 20
+                displayTpl: "<li>${name} </li>",
+                insertTpl: "<li>${name} </li>",
+                insertTpl: "${name}",
+            };
+            $("#first-ajax").atwho(results);
+        });
+    });
